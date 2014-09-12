@@ -43,6 +43,12 @@ document.chapter 'Getting Started', "All about how to get started"
 document.chapter 'Getting Started', Pathname.new("path/to/myfile.html")
 ```
 
+TODO
+
+- Render out to different formats
+- Handle png images for ePubs
+- Drop phantomjs for PDF generation
+
 ## Contributing
 
 1. Fork it ( http://github.com/mailchimp/ebookie/fork )
