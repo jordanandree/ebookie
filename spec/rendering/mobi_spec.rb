@@ -4,6 +4,10 @@ describe Ebookie::Rendering::Mobi do
   let(:document) { Ebookie::Document.new("My Book") }
   let(:mobi) { Ebookie::Rendering::Mobi.new(document) }
 
+  it "should not have set for paths" do
+    expect(mobi.respond_to?(:paths)).to be false
+  end
+
   it "should return false for template?" do
     expect(mobi.template?).to be false
   end
