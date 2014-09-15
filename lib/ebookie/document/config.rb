@@ -21,6 +21,10 @@ module Ebookie
         @language || "en-US"
       end
 
+      def slug
+        title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+      end
+
     end
   end
 end
