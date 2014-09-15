@@ -4,16 +4,26 @@ describe Ebookie::Rendering::Mobi do
   let(:document) { Ebookie::Document.new("My Book") }
   let(:mobi) { Ebookie::Rendering::Mobi.new(document) }
 
-  it "should not have set for paths" do
-    expect(mobi.respond_to?(:paths)).to be false
-  end
+  describe "configuration" do
+    it "should not have set option for :paths" do
+      expect(mobi.respond_to?(:paths)).to be false
+    end
 
-  it "should return false for template?" do
-    expect(mobi.template?).to be false
-  end
+    it "should not have set option for :files" do
+      expect(mobi.respond_to?(:files)).to be false
+    end
 
-  it "should have #format equal to mobi" do
-    expect(mobi.format).to eq 'mobi'
+    it "should have a template" do
+      expect(mobi.templatedir).to be_a Pathname
+    end
+
+    it "should return false for template?" do
+      expect(mobi.template?).to be false
+    end
+
+    it "should have #format equal to mobi" do
+      expect(mobi.format).to eq 'mobi'
+    end
   end
 
   describe "process! method" do
