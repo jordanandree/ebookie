@@ -4,6 +4,14 @@ describe Ebookie::Rendering::Epub do
   let(:document) { Ebookie::Document.new("My Book") }
   let(:epub) { Ebookie::Rendering::Epub.new(document) }
 
+  it "should have set option for :paths" do
+    expect(epub.paths).to be_a Array
+  end
+
+  it "should have set option for :files" do
+    expect(epub.files).to be_a Array
+  end
+
   it "should have a template" do
     expect(epub.templatedir).to be_a Pathname
   end

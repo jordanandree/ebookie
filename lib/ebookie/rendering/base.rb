@@ -3,24 +3,37 @@ require "ostruct"
 module Ebookie
   module Rendering
     class Base
-      @@set_store ||= {}
+      @@settings = {}
 
       attr_reader :document
 
       def initialize(document)
         @document = document
-        @@set_store[format].each do |key, val|
+
+        settings.each do |key, val|
           self.class.class_eval do
             attr_reader key
           end
 
           instance_variable_set("@#{key}", val)
-        end if @@set_store[format]
+        end
+      end
+
+      def self.inherited(subclass)
+        subclass.class_eval do
+          attr_reader :settings
+        end
+
+        subclass.instance_eval do
+          define_method :settings do
+            @@settings[format] || {}
+          end
+        end
       end
 
       def self.set(key, val)
-        @@set_store[self.format] ||= {}
-        @@set_store[self.format][key] = val
+        @@settings[format] ||= {}
+        @@settings[format][key] = val
       end
 
       def self.format

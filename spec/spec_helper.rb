@@ -13,4 +13,8 @@ RSpec.configure do |config|
     expectations.syntax = :expect
   end
 
+  config.after :each do
+    FileUtils.rm_rf "./tmp" unless ENV['DEBUG']
+  end
+
 end
