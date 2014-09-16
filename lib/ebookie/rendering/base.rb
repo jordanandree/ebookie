@@ -103,6 +103,12 @@ module Ebookie
         Pathname.new(document.config.output).join("#{document.config.slug}.#{format}").to_s
       end
 
+      def logger
+        @logger ||= Logger.new(STDOUT)
+        @logger.level = ENV['DEBUG'] ? Logger::DEBUG : Logger::WARN
+        @logger
+      end
+
     end
   end
 end
