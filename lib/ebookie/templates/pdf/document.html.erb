@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= document.title %></title>
+    <link href='<%= renderer.tmpdir.join("pdf.css") %>' rel='stylesheet' />
+  </head>
+  <body>
+    <div class='chapters'>
+      <% document.chapters.each do |chapter| %>
+        <article>
+          <%= renderer.sanitize(chapter.content) %>
+        </article>
+      <% end %>
+    </div>
+  </body>
+</html>
