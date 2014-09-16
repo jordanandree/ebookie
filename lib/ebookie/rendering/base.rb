@@ -79,7 +79,7 @@ module Ebookie
       end
 
       def render_erb_to_file(template, filepath, locals={})
-        locals.merge! document: document
+        locals.merge! document: document, renderer: self
 
         locals_struct = OpenStruct.new(locals).instance_eval { binding }
         contents = ERB.new(File.read(template)).result(locals_struct)
