@@ -9,8 +9,13 @@ module Ebookie
       set :files, %w(mimetype OEBPS/epub.css OEBPS/content.opf.erb OEBPS/toc.ncx.erb META-INF/container.xml)
       set :images_dir, 'OEBPS/images'
 
+      def copy_cover
+        FileUtils.cp document.cover, tmpdir.join("OEBPS/images/cover.png")
+      end
 
       def process!
+        copy_cover
+
         document.chapters.each do |chapter|
           render_erb_to_file templatedir.join("OEBPS/chapter.erb"), tmpdir.join("OEBPS/#{chapter.slug}.html"), chapter: chapter
         end

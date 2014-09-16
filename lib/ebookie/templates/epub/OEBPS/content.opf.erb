@@ -10,12 +10,12 @@
     <dc:identifier id="bookid">urn:uuid:33bf6f6c-3b3f-8f99-261d-33744f528720</dc:identifier>
     <dc:title><%= document.title %></dc:title>
     <% %w(creator publisher rights subject language source date).each do |option| %>
-      <% if document.config.send(option) %>
-        <dc:<%= option %>><%= document.config.send(option) %></dc:<%= option %>>
+      <% if document.send(option) %>
+        <dc:<%= option %>><%= document.send(option) %></dc:<%= option %>>
       <% end %>
     <% end %>
 
-    <% if document.config.cover %>
+    <% if document.cover %>
       <meta name="cover" content="cover-image"/>
     <% end %>
   </metadata>
@@ -23,7 +23,7 @@
   <manifest>
     <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
 
-    <% if document.config.cover %>
+    <% if document.cover %>
     <item id="cover-image" href="images/cover.png" media-type="image/png"/>
     <% end %>
 

@@ -25,4 +25,21 @@ describe Ebookie::Document::Config do
     end
   end
 
+  describe "setting a cover" do
+    it "should set file if it exists" do
+      config.cover = './spec/fixtures/sample.png'
+      expect(config.cover).to be_a Pathname
+    end
+
+    it "should not set file if it doesnt exist" do
+      config.cover = './spec/fixtures/missing.png'
+      expect(config.cover).to_not be_a Pathname
+    end
+
+    it "should not set file if files is not a png" do
+      config.cover = './spec/fixtures/sample.jpg'
+      expect(config.cover).to_not be_a Pathname
+    end
+  end
+
 end
