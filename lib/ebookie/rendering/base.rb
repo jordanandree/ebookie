@@ -72,16 +72,20 @@ module Ebookie
       def copy_files
         files.each do |file|
           if File.extname(file) == '.erb' && ext = File.extname(file)
-            write_contents_to_file render_erb(templatedir.join(file)), tmpdir.join(file.gsub(ext, ''))
+            render_erb_to_file templatedir.join(file), tmpdir.join(file.gsub(ext, ''))
           else
             FileUtils.cp templatedir.join(file), tmpdir.join(file)
           end
         end
       end
 
-      def render_erb(template)
-        locals = OpenStruct.new({ document: document }).instance_eval { binding }
-        ERB.new(File.read(template)).result(locals)
+      def render_erb_to_file(template, filepath, locals={})
+        locals.merge! document: document
+
+        locals_struct = OpenStruct.new(locals).instance_eval { binding }
+        contents = ERB.new(File.read(template)).result(locals_struct)
+
+        write_contents_to_file(contents, filepath)
       end
 
       def write_contents_to_file(contents, filepath, mode="w+")
