@@ -6,6 +6,9 @@ describe Ebookie::Rendering::Epub do
 
   before :each do |example|
     document.chapter "Introduction", "This is my foo bar"
+    document.chapter "Image", "<img src='images/sample.png' alt='Image' />"
+    document.image "./spec/fixtures/sample.png"
+
     document.configure do |config|
       config.output = './tmp/'
     end
@@ -54,6 +57,7 @@ describe Ebookie::Rendering::Epub do
     it "should call the create_paths method" do
       expect_any_instance_of(Ebookie::Rendering::Base).to receive(:create_paths)
       expect_any_instance_of(Ebookie::Rendering::Base).to receive(:copy_files)
+      expect_any_instance_of(Ebookie::Rendering::Base).to receive(:copy_images)
       expect_any_instance_of(Ebookie::Rendering::Epub).to receive(:process!)
       epub.render
     end
@@ -84,8 +88,16 @@ describe Ebookie::Rendering::Epub do
     end
   end
 
-  describe "template files", zip: false do
+  describe "copying images", zip: false do
+    it "should call the copy_images method" do
+      expect_any_instance_of(Ebookie::Rendering::Base).to receive(:copy_images)
+      epub.render
+    end
 
+    it "should copy the images" do
+      epub.render
+      expect(File.exists?('./tmp/my-book/epub/OEBPS/images/sample.png')).to be true
+    end
   end
 
   describe "processing the epub" do

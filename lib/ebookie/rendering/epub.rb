@@ -7,6 +7,8 @@ module Ebookie
 
       set :paths, %w(OEBPS OEBPS/images META-INF)
       set :files, %w(mimetype OEBPS/epub.css OEBPS/content.opf.erb OEBPS/toc.ncx.erb META-INF/container.xml)
+      set :images_dir, 'OEBPS/images'
+
 
       def process!
         document.chapters.each do |chapter|

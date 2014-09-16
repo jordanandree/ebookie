@@ -1,6 +1,7 @@
 require "ebookie/document/config"
 require "ebookie/document/base"
 require "ebookie/document/chapter"
+require "ebookie/document/image"
 
 module Ebookie
   module Document

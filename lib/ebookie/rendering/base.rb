@@ -55,6 +55,7 @@ module Ebookie
 
         create_paths if respond_to?(:paths) && paths
         copy_files if respond_to?(:files) && files
+        copy_images if document.images.any?
 
         process! if respond_to?(:process!)
       end
@@ -66,6 +67,12 @@ module Ebookie
       def create_paths
         paths.each do |path|
           FileUtils.mkdir_p tmpdir.join(path)
+        end
+      end
+
+      def copy_images
+        document.images.each do |image|
+          FileUtils.cp image.file, tmpdir.join(settings[:images_dir], image.basename)
         end
       end
 
