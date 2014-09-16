@@ -21,13 +21,15 @@ Or install it yourself as:
 Create a new document:
 
 ```ruby
-document = Ebookie::Document.new "My eBook"
+document = Ebookie::Document.new "My eBook" # Title
 ```
 
 Configure it:
 
 ```ruby
 document.configure do |config|
+  config.cover   = './path/to/cover.png'  # Cover image
+  config.output  = './ebook/'             # Ouput for ePub, Mobi, PDF
   config.subject = "Introductions"
   config.source  = "http://google.com"
 end
@@ -43,7 +45,32 @@ document.chapter 'Getting Started', "All about how to get started"
 document.chapter 'Getting Started', Pathname.new("path/to/myfile.html")
 ```
 
-TODO
+Add an image:
+
+```ruby
+document.image './path/to/image.png'
+
+# Chapters can reference images with html:
+document.chapter "My Cool Image", "<img src='images/image.png' alt='image' />"
+```
+
+Render the document:
+
+```ruby
+# ePub
+epub = Ebookie::Rendering::Epub.new(document)
+epub.render
+
+# Mobi
+mobi = Ebookie::Rendering::Mobi.new(document)
+mobi.render
+
+# PDF
+pdf = Ebookie::Rendering::PDF.new(document)
+pdf.render
+```
+
+## TODO
 
 - Render out to different formats
 - Handle png images for ePubs
