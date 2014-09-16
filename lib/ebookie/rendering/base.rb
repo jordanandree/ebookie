@@ -3,20 +3,10 @@ require "ostruct"
 module Ebookie
   module Rendering
     class Base
-      @@settings = {}
-
       attr_reader :document
 
       def initialize(document)
         @document = document
-
-        settings.each do |key, val|
-          self.class.class_eval do
-            attr_reader key
-          end
-
-          instance_variable_set("@#{key}", val)
-        end
       end
 
       def self.inherited(subclass)
@@ -26,14 +16,16 @@ module Ebookie
 
         subclass.instance_eval do
           define_method :settings do
-            @@settings[format] || {}
+            @@settings.send(format) || {}
           end
         end
       end
 
       def self.set(key, val)
-        @@settings[format] ||= {}
-        @@settings[format][key] = val
+        @@settings ||= OpenStruct.new
+
+        format_options = @@settings.send(format) || {}
+        @@settings.send "#{format}=", format_options.merge({key => val})
       end
 
       def self.format
@@ -53,8 +45,8 @@ module Ebookie
 
         create_tmpdir
 
-        create_paths if respond_to?(:paths) && paths
-        copy_files if respond_to?(:files) && files
+        create_paths if settings.keys.include?(:paths) && settings[:paths]
+        copy_files if settings.keys.include?(:files) && settings[:files]
         copy_images if document.images.any?
 
         process! if respond_to?(:process!)
@@ -65,7 +57,7 @@ module Ebookie
       end
 
       def create_paths
-        paths.each do |path|
+        settings[:paths].each do |path|
           FileUtils.mkdir_p tmpdir.join(path)
         end
       end
@@ -77,7 +69,7 @@ module Ebookie
       end
 
       def copy_files
-        files.each do |file|
+        settings[:files].each do |file|
           if File.extname(file) == '.erb' && ext = File.extname(file)
             render_erb_to_file templatedir.join(file), tmpdir.join(file.gsub(ext, ''))
           else
