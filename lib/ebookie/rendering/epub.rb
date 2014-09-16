@@ -13,17 +13,23 @@ module Ebookie
           write_contents_to_file chapter_layout(chapter), tmpdir.join("OEBPS/#{chapter.slug}.html")
         end
 
-        Epzip.zip( tmpdir, output )
+        unless logger.debug?
+          Epzip.class_variable_set("@@zip_cmd_path", "zip -q")
+        end
+
+        zip = Epzip.zip( tmpdir, output )
 
         validation = EpubValidator.check( output )
         if validation.valid?
-          puts "Successfully compiled #{document.title} to epub"
+          logger.info "Successfully compiled #{document.title} to epub"
         else
-          puts "Errors when compiling #{document.title} to epub"
+          logger.warn "Errors when compiling #{document.title} to epub"
           validation.messages.each do |m|
-            puts "~> #{m}"
+            logger.warn "~> #{m}"
           end
         end
+
+        return zip
       end
 
       def chapter_layout(chapter)
