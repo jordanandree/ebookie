@@ -12,10 +12,6 @@ module Ebookie
         @config.title = title
       end
 
-      def title
-        @config.title
-      end
-
       def configure(&block)
         yield @config
       end
@@ -26,6 +22,14 @@ module Ebookie
 
       def image(file)
         @images << Image.new(file)
+      end
+
+      def method_missing(meth, *args)
+        if @config.respond_to?(meth)
+          @config.send(meth, *args)
+        else
+          super
+        end
       end
 
     end

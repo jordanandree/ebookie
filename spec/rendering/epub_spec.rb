@@ -4,15 +4,18 @@ describe Ebookie::Rendering::Epub do
   let(:document) { Ebookie::Document.new("My Book") }
   let(:epub) { Ebookie::Rendering::Epub.new(document) }
 
-  before :each do |example|
+  before do
     document.chapter "Introduction", "This is my foo bar"
     document.chapter "Image", "<img src='images/sample.png' alt='Image' />"
     document.image "./spec/fixtures/sample.png"
 
     document.configure do |config|
       config.output = './tmp/'
+      config.cover = './spec/fixtures/sample.png'
     end
+  end
 
+  before :each do |example|
     if example.metadata[:zip] == false
       allow(Epzip).to receive(:zip).and_return(true)
       allow(EpubValidator).to receive(:check).and_return OpenStruct.new({:valid? => true})
@@ -101,6 +104,11 @@ describe Ebookie::Rendering::Epub do
   end
 
   describe "processing the epub" do
+    it "should copy the cover image", zip: false do
+      epub.render
+      expect(File.exists?('./tmp/my-book/epub/OEBPS/images/cover.png')).to be true
+    end
+
     it "should write chapters to files", zip: false do
       epub.render
       expect(File.exists?('./tmp/my-book/epub/OEBPS/introduction.html')).to be true

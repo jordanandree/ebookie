@@ -21,6 +21,18 @@ module Ebookie
         @language || "en-US"
       end
 
+      def cover=(path)
+        if File.exists? path
+          if File.extname(path) == '.png'
+            @cover = Pathname.new(path)
+          else
+            Ebookie.logger.warn "Cover file is not a valid png for '#{path}'"
+          end
+        else
+          Ebookie.logger.warn "Cover file does not exist for '#{path}'"
+        end
+      end
+
       def slug
         title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
       end

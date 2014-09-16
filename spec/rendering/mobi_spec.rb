@@ -4,6 +4,10 @@ describe Ebookie::Rendering::Mobi do
   let(:document) { Ebookie::Document.new("My Book") }
   let(:mobi) { Ebookie::Rendering::Mobi.new(document) }
 
+  before :each do
+    document.config.cover = './spec/fixtures/sample.png'
+  end
+
   describe "configuration" do
     it "should not have set option for :paths" do
       expect(mobi.respond_to?(:paths)).to be false
