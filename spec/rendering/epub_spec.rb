@@ -24,11 +24,11 @@ describe Ebookie::Rendering::Epub do
 
   describe "configuration" do
     it "should have set option for :paths" do
-      expect(epub.paths).to be_a Array
+      expect(epub.settings[:paths]).to be_a Array
     end
 
     it "should have set option for :files" do
-      expect(epub.files).to be_a Array
+      expect(epub.settings[:files]).to be_a Array
     end
 
     it "should have a template" do

@@ -2,7 +2,12 @@ require 'bundler/setup'
 Bundler.setup
 
 require "ebookie"
-require "pry-byebug"
+
+if RUBY_VERSION > "1.9.3"
+  require "pry-byebug"
+else
+  require "pry-debugger"
+end
 
 RSpec.configure do |config|
 
