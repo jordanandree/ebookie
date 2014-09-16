@@ -34,7 +34,10 @@
       <item id="<%= chapter.slug %>" href="<%= chapter.slug + ".html" %>" media-type="application/xhtml+xml" />
     <% end %>
 
-    <!-- TODO images -->
+    <!-- images -->
+    <% document.images.each_with_index do |image, index| %>
+    <item id="image<%= index + 1 %>" href="images/<%= image.basename %>" media-type="image/png" />
+    <% end %>
   </manifest>
 
   <spine toc="ncx">
