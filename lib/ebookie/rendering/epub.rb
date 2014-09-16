@@ -10,7 +10,7 @@ module Ebookie
 
       def process!
         document.chapters.each do |chapter|
-          write_contents_to_file chapter_layout(chapter), tmpdir.join("OEBPS/#{chapter.slug}.html")
+          render_erb_to_file templatedir.join("OEBPS/chapter.erb"), tmpdir.join("OEBPS/#{chapter.slug}.html"), chapter: chapter
         end
 
         unless logger.debug?
@@ -30,18 +30,6 @@ module Ebookie
         end
 
         return zip
-      end
-
-      def chapter_layout(chapter)
-        layout = <<EOF
-<?xml version="1.0" encoding="utf-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <title>#{chapter.title}</title>
-  </head>
-  <body><div>#{chapter.content}</div></body>
-</html>
-EOF
       end
 
     end
