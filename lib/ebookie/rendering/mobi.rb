@@ -19,9 +19,9 @@ module Ebookie
         end
 
         if warnings.length > 0
-          logger.warn "Warnings when compiling #{document.title} to mobi"
+          Ebookie.logger.warn "Warnings when compiling #{document.title} to mobi"
           warnings.each do |m|
-            logger.warn "~> #{m}"
+            Ebookie.logger.warn "~> #{m}"
           end
         end
       end

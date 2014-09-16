@@ -13,7 +13,7 @@ module Ebookie
           render_erb_to_file templatedir.join("OEBPS/chapter.erb"), tmpdir.join("OEBPS/#{chapter.slug}.html"), chapter: chapter
         end
 
-        unless logger.debug?
+        unless Ebookie.logger.debug?
           Epzip.class_variable_set("@@zip_cmd_path", "zip -q")
         end
 
@@ -21,11 +21,11 @@ module Ebookie
 
         validation = EpubValidator.check( output )
         if validation.valid?
-          logger.info "Successfully compiled #{document.title} to epub"
+          Ebookie.logger.info "Successfully compiled #{document.title} to epub"
         else
-          logger.warn "Errors when compiling #{document.title} to epub"
+          Ebookie.logger.warn "Errors when compiling #{document.title} to epub"
           validation.messages.each do |m|
-            logger.warn "~> #{m}"
+            Ebookie.logger.warn "~> #{m}"
           end
         end
 
