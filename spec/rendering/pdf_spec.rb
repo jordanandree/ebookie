@@ -11,7 +11,7 @@ describe Ebookie::Rendering::PDF do
 
     document.configure do |config|
       config.output = './tmp/'
-      config.cover = './spec/fixtures/sample.png'
+      config.cover = './spec/fixtures/sample-2.png'
     end
   end
 
