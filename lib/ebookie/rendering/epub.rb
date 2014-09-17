@@ -39,6 +39,11 @@ module Ebookie
         return zip
       end
 
+      def sanitize(content)
+        content.gsub! /src=('|")([a-zA-Z0-9\.]+)('|")/, 'src=\1images/\2\3'
+        content
+      end
+
     end
   end
 end
