@@ -70,6 +70,43 @@ pdf = Ebookie::Rendering::PDF.new(document)
 pdf.render
 ```
 
+## PhantomJS Installation on Mac OS X
+
+There is a bug in PhantomJS on Mac OS X that doesn't render an HTML page as selectable text. It will be fixed in PhantomJS 2.0, so for now you'll have to apply a patch when installing with Homebrew.
+
+First, update homebrew formulae:
+
+```bash
+$ brew update
+```
+
+If you already have PhantomJS installed, then remove it:
+
+```bash
+$ brew uninstall phantomjs
+```
+
+Next, the PhantomJS formula needs to be edited to apply a patch that fixes native text rendering in Mac OS X:
+
+```bash
+$ brew edit phantomjs
+```
+
+Add these lines after any other `patches` blocks and before the `def install` method:
+
+```ruby
+patch do
+  url "https://github.com/ariya/phantomjs/commit/0663263bfa748b0933d7eff4b5e49d9ed97bcc84.diff"
+  sha1 "ac0f7f967d8b5a3a49c8f6654f8182ffb99391f5"
+end
+```
+
+Finally, reinstall PhantomJS from source via homebrew and go do something else since your computer will be at 100% CPU for about 30 minutes:
+
+```bash
+$ brew install phantomjs --build-from-source
+```
+
 ## TODO
 
 - Render out to different formats
