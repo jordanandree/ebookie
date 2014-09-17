@@ -7,6 +7,8 @@ module Ebookie
 
       def initialize(document)
         @document = document
+
+        after_initialize if respond_to?(:after_initialize)
       end
 
       def self.inherited(subclass)
