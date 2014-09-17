@@ -18,6 +18,10 @@ RSpec.configure do |config|
     expectations.syntax = :expect
   end
 
+  config.before :each do
+    FileUtils.rm_rf "./tmp" if File.exists?("./tmp")
+  end
+
   config.after :each do
     FileUtils.rm_rf "./tmp" unless ENV['DEBUG']
   end
