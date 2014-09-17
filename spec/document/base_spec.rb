@@ -1,7 +1,7 @@
 require "spec_helper"
 
-describe Ebookie::Document do
-  let(:document) { Ebookie::Document.new("My Title") }
+describe Ebookie::Document::Base do
+  let(:document) { Ebookie::Document::Base.new("My Title") }
 
   it "should have a chapters array" do
     expect(document.chapters).to be_a Array
