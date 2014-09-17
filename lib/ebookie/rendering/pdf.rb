@@ -6,7 +6,7 @@ module Ebookie
   module Rendering
     class PDF < Base
 
-      set :files, %w(pdf.css document.html.erb cover.html.erb)
+      set :files, %w(pdf.css document.html.erb)
       set :paths, %w(images)
       set :images_dir, 'images'
 
@@ -31,21 +31,23 @@ module Ebookie
             :CreationDate => document.date
           }
         }
+
+        settings[:files] << 'cover.html.erb' if document.cover && !pdf_cover?
       end
 
       def process!
-        if File.extname(document.cover) != '.pdf'
-          FileUtils.cp document.cover, tmpdir.join('images', File.basename(document.cover))
-          cover_path = tmpdir.join("cover.pdf")
-
-          convert_page(tmpdir.join('cover.html'), cover_path)
-          @pdf_options.merge!(template: cover_path)
-        end
-
         convert_page(tmpdir.join('document.html'), @tmp_path)
 
         ::PDF::Reader.new(@tmp_path).pages.each_with_index do |page, idx|
           prune_blank_page(idx)
+        end
+
+        if document.cover && !pdf_cover?
+          cover_path = convert_cover
+          @pdf_options.merge!(template: cover_path)
+        else
+          @pdf_options.merge!(template: tmpdir.join("page-0.pdf"))
+          @pages = @pages.drop(1)
         end
 
         Prawn::Document.generate(output, @pdf_options) do |pdf|
@@ -53,6 +55,10 @@ module Ebookie
             pdf.start_new_page( template: tmpdir.join("page-#{idx}.pdf") )
           end
         end
+      end
+
+      def pdf_cover?
+        File.extname(document.cover) == '.pdf'
       end
 
       def sanitize(content)
@@ -63,6 +69,15 @@ module Ebookie
       def convert_page(input_path, output_path)
         script = File.expand_path("../html2pdf.js", __FILE__)
         system [@phantomjs_path, script, input_path, output_path].join(' ')
+      end
+
+      def convert_cover
+        FileUtils.cp document.cover, tmpdir.join('images', File.basename(document.cover))
+        cover_path = tmpdir.join("cover.pdf")
+
+        convert_page(tmpdir.join('cover.html'), cover_path)
+
+        return cover_path
       end
 
       def prune_blank_page(index)
