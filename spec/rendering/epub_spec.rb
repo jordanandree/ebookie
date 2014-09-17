@@ -6,7 +6,7 @@ describe Ebookie::Rendering::Epub do
 
   before do
     document.chapter "Introduction", "This is my foo bar"
-    document.chapter "Image", "<img src='images/sample.png' alt='Image' />"
+    document.chapter "Image", "<img src='sample.png' alt='Image' />"
     document.image "./spec/fixtures/sample.png"
 
     document.configure do |config|
