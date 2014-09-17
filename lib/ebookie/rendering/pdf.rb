@@ -1,4 +1,3 @@
-require "phantomjs"
 require "prawn"
 require "prawn/templates"
 require "pdf-reader"
@@ -37,7 +36,10 @@ module Ebookie
 
       def convert_page
         script = File.expand_path("../html2pdf.js", __FILE__)
-        system [Phantomjs.path, script, tmpdir.join('document.html'), @tmp_path].join(' ')
+        phantomjs_path = `which phantomjs`.chomp
+        raise "PhantomJS not installed" unless phantomjs_path
+
+        system [phantomjs_path, script, tmpdir.join('document.html'), @tmp_path].join(' ')
       end
 
       def prune_blank_page(index)

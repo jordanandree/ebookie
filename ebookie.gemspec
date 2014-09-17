@@ -27,6 +27,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "kindlegen",           "~> 2.9.1"
   spec.add_dependency "prawn",               "= 0.15.0"
   spec.add_dependency "prawn-templates",     "~> 0.0.3"
-  spec.add_dependency "phantomjs",           "~> 1.9.7"
   spec.add_dependency "pdf-reader",          "~> 1.3.3"
 end
