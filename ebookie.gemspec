@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "ebookie"
   spec.version       = Ebookie::VERSION
   spec.authors       = ["Jordan Andree"]
-  spec.email         = ["jordanandree@gmail.com"]
+  spec.email         = ["jordan.andree@mailchimp.com"]
   spec.summary       = %q{Generate PDF, ePub, and Mobi eBooks}
   spec.description   = %q{Generate PDF, ePub, and Mobi eBooks}
   spec.homepage      = "https://github.com/mailchimp/ebookie"

@@ -48,10 +48,11 @@ document.chapter 'Getting Started', Pathname.new("path/to/myfile.html")
 Add an image:
 
 ```ruby
+# Relative or absolute path for image to be copied
 document.image './path/to/image.png'
 
 # Chapters can reference images with html:
-document.chapter "My Cool Image", "<img src='images/image.png' alt='image' />"
+document.chapter "My Cool Image", "<img src='image.png' alt='image' />"
 ```
 
 Render the document:
@@ -103,12 +104,6 @@ Finally, reinstall PhantomJS from source via homebrew and go do something else s
 ```bash
 $ brew install phantomjs --build-from-source
 ```
-
-## TODO
-
-- Render out to different formats
-- Handle png images for ePubs
-- Drop phantomjs for PDF generation
 
 ## Contributing
 
