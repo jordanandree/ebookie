@@ -66,16 +66,18 @@ module Ebookie
         content
       end
 
-      def convert_page(input_path, output_path)
+      def convert_page(input_path, output_path, args=[])
         script = File.expand_path("../html2pdf.js", __FILE__)
-        system [@phantomjs_path, script, input_path, output_path].join(' ')
+        command = [@phantomjs_path, script, input_path, output_path]
+        system (command + args).join(' ')
       end
 
       def convert_cover
         FileUtils.cp document.cover, tmpdir.join('images', File.basename(document.cover))
         cover_path = tmpdir.join("cover.pdf")
 
-        convert_page(tmpdir.join('cover.html'), cover_path)
+        margins = %w(0in 0in 0in 0in)
+        convert_page(tmpdir.join('cover.html'), cover_path, margins)
 
         return cover_path
       end
