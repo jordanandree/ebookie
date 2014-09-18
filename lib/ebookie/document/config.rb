@@ -10,7 +10,7 @@ module Ebookie
       attr_accessor :language
       attr_accessor :source
       attr_accessor :date
-      attr_accessor :output
+      attr_accessor :destination
       attr_accessor :cover
 
       def date

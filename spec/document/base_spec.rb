@@ -4,7 +4,7 @@ describe Ebookie::Document::Base do
   let(:document) { Ebookie::Document::Base.new("My Title") }
 
   before do
-    document.config.output = './tmp'
+    document.config.destination = './tmp'
   end
 
   it "should have a chapters array" do
@@ -19,11 +19,11 @@ describe Ebookie::Document::Base do
     it "should yield block for setting options" do
       document.configure do |config|
         config.title = 'bar'
-        config.output = 'foo'
+        config.destination = 'foo'
       end
 
       expect(document.config.title).to eq 'bar'
-      expect(document.config.output).to eq 'foo'
+      expect(document.config.destination).to eq 'foo'
     end
   end
 

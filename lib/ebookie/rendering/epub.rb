@@ -24,9 +24,9 @@ module Ebookie
           Epzip.class_variable_set("@@zip_cmd_path", "zip -q")
         end
 
-        zip = Epzip.zip( tmpdir, output )
+        zip = Epzip.zip( tmpdir, output_path )
 
-        validation = EpubValidator.check( output )
+        validation = EpubValidator.check( output_path )
         if validation.valid?
           Ebookie.logger.info "Successfully compiled #{document.title} to epub"
         else

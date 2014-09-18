@@ -1,14 +1,12 @@
 module Ebookie
   module Document
-    class Chapter < Struct.new(:title, :content)
+    class Chapter
 
-      attr_reader :title
+      attr_accessor :title, :content
 
       def initialize(title, content)
         @title = title
         @content = content
-
-        super title, content
       end
 
       def content
