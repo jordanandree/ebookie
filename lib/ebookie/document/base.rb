@@ -24,6 +24,18 @@ module Ebookie
         @images << Image.new(file)
       end
 
+      def render_pdf
+        Rendering::Pdf.new(self).render
+      end
+
+      def render_epub
+        Rendering::Epub.new(self).render
+      end
+
+      def render_mobi
+        Rendering::Mobi.new(self).render
+      end
+
       def method_missing(meth, *args)
         if @config.respond_to?(meth)
           @config.send(meth, *args)
