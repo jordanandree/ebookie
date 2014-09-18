@@ -62,7 +62,8 @@ module Ebookie
       end
 
       def sanitize(content)
-        content.gsub! /src=('|")([a-zA-Z0-9\.]+)('|")/, 'src=\1' + tmpdir.to_s + '/images/\2\3'
+        match = content.match(IMAGE_SRC_REGEX).to_a.last
+        content.gsub! match, "#{tmpdir}/images/" if match
         content
       end
 

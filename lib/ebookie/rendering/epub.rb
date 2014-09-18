@@ -35,12 +35,11 @@ module Ebookie
             Ebookie.logger.warn "~> #{m}"
           end
         end
-
-        return zip
       end
 
       def sanitize(content)
-        content.gsub! /src=('|")([a-zA-Z0-9\.]+)('|")/, 'src=\1images/\2\3'
+        match = content.match(IMAGE_SRC_REGEX).to_a.last
+        content.gsub! match, "images/" if match
         content
       end
 
