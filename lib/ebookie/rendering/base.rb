@@ -3,6 +3,8 @@ require "ostruct"
 module Ebookie
   module Rendering
     class Base
+      IMAGE_SRC_REGEX =  /src=['"](\/?.+\/)*.+\..+['"]/xim
+
       attr_reader :document
 
       def initialize(document)
@@ -53,8 +55,7 @@ module Ebookie
 
         FileUtils.mkdir_p(document.destination) unless File.exists?(document.destination)
 
-        process! if respond_to?(:process!)
-
+        process!
         return output_path
       end
 
