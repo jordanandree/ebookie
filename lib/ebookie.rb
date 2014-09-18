@@ -5,7 +5,11 @@ module Ebookie
 
   def self.logger
     @logger ||= Logger.new(STDOUT)
-    @logger.level = ENV['DEBUG'] ? Logger::DEBUG : Logger::WARN
+    if ENV['LOG_LEVEL'] && log_level = Logger.const_get(ENV['LOG_LEVEL'])
+      @logger.level = log_level
+    else
+      @logger.level = Logger::WARN
+    end
     @logger
   end
 end

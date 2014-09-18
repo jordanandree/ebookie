@@ -5,10 +5,9 @@ describe Ebookie::Rendering::Pdf do
   let(:pdf) { Ebookie::Rendering::Pdf.new(document) }
 
   before :each do |example|
-
     if example.metadata[:zip] == false
       allow(Ebookie::Rendering::Pdf).to receive(:convert_page)
-      allow(Pdf::Reader).to receive(:new).and_return( OpenStruct.new(pages: {}) )
+      allow(PDF::Reader).to receive(:new).and_return( OpenStruct.new(pages: {}) )
       allow(Prawn::Document).to receive(:generate)
     end
   end
@@ -26,8 +25,24 @@ describe Ebookie::Rendering::Pdf do
   end
 
   describe "process! method" do
+    context 'pdf with no cover' do
+      let(:document) { Ebookie::Document.new("My Book") }
+
+      it "should use the first page as the template", zip: false do
+        pdf.render
+        expect(pdf.instance_variable_get("@pdf_options")[:template].to_s).to match "page-0.pdf"
+      end
+
+      it "should create the pdf" do
+        pdf.render
+        expect(File.exists?('./tmp/my-book.pdf')).to be true
+      end
+    end
+
     context 'pdf with cover' do
-      before do
+      let(:document) { Ebookie::Document.new("My Book") }
+
+      before :each do
         document.config.cover = './spec/fixtures/sample-2.png'
       end
 
@@ -54,18 +69,6 @@ describe Ebookie::Rendering::Pdf do
       it "should create the cover", zip: false do
         pdf.render
         expect(File.exists?('./tmp/my-book/pdf/cover.pdf')).to be true
-      end
-
-      it "should create the pdf" do
-        pdf.render
-        expect(File.exists?('./tmp/my-book.pdf')).to be true
-      end
-    end
-
-    context 'pdf with no cover' do
-      it "should use the first page as the template", zip: false do
-        pdf.render
-        expect(pdf.instance_variable_get("@pdf_options")[:template].to_s).to match "page-0.pdf"
       end
 
       it "should create the pdf" do
