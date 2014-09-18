@@ -66,7 +66,7 @@ mobi = Ebookie::Rendering::Mobi.new(document)
 mobi.render
 
 # PDF
-pdf = Ebookie::Rendering::PDF.new(document)
+pdf = Ebookie::Rendering::Pdf.new(document)
 pdf.render
 ```
 

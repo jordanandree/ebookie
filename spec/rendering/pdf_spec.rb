@@ -1,14 +1,14 @@
 require "spec_helper"
 
-describe Ebookie::Rendering::PDF do
+describe Ebookie::Rendering::Pdf do
   let(:document) { Ebookie::Document.new("My Book") }
-  let(:pdf) { Ebookie::Rendering::PDF.new(document) }
+  let(:pdf) { Ebookie::Rendering::Pdf.new(document) }
 
   before :each do |example|
 
     if example.metadata[:zip] == false
-      allow(Ebookie::Rendering::PDF).to receive(:convert_page)
-      allow(PDF::Reader).to receive(:new).and_return( OpenStruct.new(pages: {}) )
+      allow(Ebookie::Rendering::Pdf).to receive(:convert_page)
+      allow(Pdf::Reader).to receive(:new).and_return( OpenStruct.new(pages: {}) )
       allow(Prawn::Document).to receive(:generate)
     end
   end
