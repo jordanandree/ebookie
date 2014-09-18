@@ -58,16 +58,13 @@ Render the document:
 
 ```ruby
 # ePub
-epub = Ebookie::Rendering::Epub.new(document)
-epub.render
+document.render_epub
 
 # Mobi
-mobi = Ebookie::Rendering::Mobi.new(document)
-mobi.render
+document.render_mobi
 
 # PDF
-pdf = Ebookie::Rendering::Pdf.new(document)
-pdf.render
+document.render_pdf
 ```
 
 ## PhantomJS Installation on Mac OS X
