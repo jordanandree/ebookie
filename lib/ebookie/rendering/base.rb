@@ -43,7 +43,7 @@ module Ebookie
       end
 
       def render
-        throw "Output path required" unless document.config.output
+        throw "Output path required" unless document.destination
 
         create_tmpdir
 
@@ -51,7 +51,11 @@ module Ebookie
         copy_files if settings.keys.include?(:files) && settings[:files]
         copy_images if document.images.any?
 
+        FileUtils.mkdir_p(document.destination) unless File.exists?(document.destination)
+
         process! if respond_to?(:process!)
+
+        return output_path
       end
 
       def create_tmpdir
@@ -104,8 +108,8 @@ module Ebookie
         self.class.format
       end
 
-      def output
-        Pathname.new(document.config.output).join("#{document.config.slug}.#{format}").to_s
+      def output_path
+        Pathname.new(document.destination).join("#{document.config.slug}.#{format}").to_s
       end
 
     end

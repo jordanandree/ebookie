@@ -10,7 +10,7 @@ describe Ebookie::Rendering::Epub do
     document.image "./spec/fixtures/sample.png"
 
     document.configure do |config|
-      config.output = './tmp/'
+      config.destination = './tmp/'
       config.cover = './spec/fixtures/sample.png'
     end
   end

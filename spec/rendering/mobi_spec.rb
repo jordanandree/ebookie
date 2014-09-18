@@ -34,7 +34,7 @@ describe Ebookie::Rendering::Mobi do
     before :each do
       document.chapter "Introduction", "This is my foo bar"
       document.configure do |config|
-        config.output = './tmp/'
+        config.destination = './tmp/'
       end
     end
 

@@ -28,10 +28,10 @@ Configure it:
 
 ```ruby
 document.configure do |config|
-  config.cover   = './path/to/cover.png'  # Cover image
-  config.output  = './ebook/'             # Ouput for ePub, Mobi, PDF
-  config.subject = "Introductions"
-  config.source  = "http://google.com"
+  config.cover        = './path/to/cover.png'  # Cover image
+  config.destination  = './ebook/'             # Ouput for ePub, Mobi, PDF
+  config.subject      = "Introductions"
+  config.source       = "http://google.com"
 end
 ```
 

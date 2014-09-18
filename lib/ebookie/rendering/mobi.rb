@@ -5,13 +5,13 @@ module Ebookie
     class Mobi < Base
 
       def process!
-        epub = "#{document.config.output}/#{document.config.slug}.epub"
+        epub = "#{document.destination}/#{document.slug}.epub"
 
         if !File.exists?(epub)
           Epub.new(document).render
         end
 
-        command = "#{Kindlegen.command} #{epub} -c2 -verbose -o #{document.config.slug}.mobi"
+        command = "#{Kindlegen.command} #{epub} -c2 -verbose -o #{document.slug}.mobi"
         converted = `#{command}`
 
         warnings = converted.split("\n").keep_if do |line|

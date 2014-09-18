@@ -17,7 +17,7 @@ describe Ebookie::Rendering::Pdf do
     document.chapter "Image", "<img src='sample.png' alt='Image' />"
     document.image "./spec/fixtures/sample.png"
 
-    document.config.output = './tmp/'
+    document.config.destination = './tmp/'
   end
 
   it "should return true for template?" do

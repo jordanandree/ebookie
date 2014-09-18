@@ -50,7 +50,7 @@ module Ebookie
           @pages = @pages.drop(1)
         end
 
-        Prawn::Document.generate(output, @pdf_options) do |pdf|
+        Prawn::Document.generate(output_path, @pdf_options) do |pdf|
           @pages.each do |idx|
             pdf.start_new_page( template: tmpdir.join("page-#{idx}.pdf") )
           end
