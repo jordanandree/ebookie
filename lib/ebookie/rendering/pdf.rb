@@ -4,7 +4,7 @@ require "pdf-reader"
 
 module Ebookie
   module Rendering
-    class PDF < Base
+    class Pdf < Base
 
       set :files, %w(pdf.css document.html.erb)
       set :paths, %w(images)
