@@ -23,13 +23,13 @@ module Ebookie
 
       def cover=(path)
         if File.exists? path
-          if File.extname(path) == '.png'
+          if %w(.png .pdf).include? File.extname(path)
             @cover = Pathname.new(path)
           else
-            Ebookie.logger.warn "Cover file is not a valid png for '#{path}'"
+            Ebookie.logger.warn "Cover file is not a valid"
           end
         else
-          Ebookie.logger.warn "Cover file does not exist for '#{path}'"
+          Ebookie.logger.warn "Cover file does not exist"
         end
       end
 

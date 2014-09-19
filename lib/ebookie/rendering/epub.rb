@@ -10,6 +10,10 @@ module Ebookie
       set :images_dir, 'OEBPS/images'
 
       def copy_cover
+        if File.extname(document.cover) != '.png'
+          raise "Cover file is not a valid png"
+        end
+
         FileUtils.cp document.cover, tmpdir.join("OEBPS/images/cover.png")
       end
 

@@ -31,6 +31,11 @@ describe Ebookie::Document::Config do
       expect(config.cover).to be_a Pathname
     end
 
+    it "should set file if type is pdf" do
+      config.cover = './spec/fixtures/sample-2.pdf'
+      expect(config.cover).to be_a Pathname
+    end
+
     it "should not set file if it doesnt exist" do
       config.cover = './spec/fixtures/missing.png'
       expect(config.cover).to_not be_a Pathname

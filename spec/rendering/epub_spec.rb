@@ -104,6 +104,13 @@ describe Ebookie::Rendering::Epub do
   end
 
   describe "processing the epub" do
+    it "should fail if cover is not png", zip: false do
+      document.config.cover = './spec/fixtures/sample-2.pdf'
+      expect {
+        epub.render
+      }.to raise_error
+    end
+
     it "should copy the cover image", zip: false do
       epub.render
       expect(File.exists?('./tmp/my-book/epub/OEBPS/images/cover.png')).to be true

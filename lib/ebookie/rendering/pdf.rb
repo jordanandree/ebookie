@@ -32,7 +32,7 @@ module Ebookie
           }
         }
 
-        settings[:files] << 'cover.html.erb' if document.cover && !pdf_cover?
+        settings[:files] << 'cover.html.erb' if convert_cover?
       end
 
       def process!
@@ -42,10 +42,14 @@ module Ebookie
           prune_blank_page(idx)
         end
 
-        if document.cover && !pdf_cover?
+        if convert_cover?
           cover_path = convert_cover
           @pdf_options.merge!(template: cover_path)
         else
+          @pdf_options.merge!(template: document.cover)
+        end
+
+        unless document.cover
           @pdf_options.merge!(template: tmpdir.join("page-0.pdf"))
           @pages = @pages.drop(1)
         end
@@ -55,10 +59,6 @@ module Ebookie
             pdf.start_new_page( template: tmpdir.join("page-#{idx}.pdf") )
           end
         end
-      end
-
-      def pdf_cover?
-        File.extname(document.cover) == '.pdf'
       end
 
       def sanitize(content)
@@ -71,6 +71,10 @@ module Ebookie
         script = File.expand_path("../html2pdf.js", __FILE__)
         command = [@phantomjs_path, script, input_path, output_path]
         system (command + args).join(' ')
+      end
+
+      def convert_cover?
+        document.cover && File.extname(document.cover) != '.pdf'
       end
 
       def convert_cover
