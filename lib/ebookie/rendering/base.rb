@@ -51,7 +51,7 @@ module Ebookie
 
         create_paths if settings.keys.include?(:paths) && settings[:paths]
         copy_files if settings.keys.include?(:files) && settings[:files]
-        copy_images if document.images.any?
+        copy_images if document.images.any? && settings[:images_dir]
 
         FileUtils.mkdir_p(document.destination) unless File.exists?(document.destination)
 
