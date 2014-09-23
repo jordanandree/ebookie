@@ -14,21 +14,21 @@ module Ebookie
           raise "Cover file is not a valid png"
         end
 
-        FileUtils.cp document.cover, tmpdir.join("OEBPS/images/cover.png")
+        FileUtils.cp document.cover, tmp_dir.join("OEBPS/images/cover.png")
       end
 
       def process!
-        copy_cover
+        copy_cover if document.cover
 
         document.chapters.each do |chapter|
-          render_erb_to_file templatedir.join("OEBPS/chapter.erb"), tmpdir.join("OEBPS/#{chapter.slug}.html"), chapter: chapter
+          render_erb_to_file template_file("OEBPS/chapter.erb"), tmp_dir.join("OEBPS/#{chapter.slug}.html"), chapter: chapter
         end
 
         unless Ebookie.logger.debug?
           Epzip.class_variable_set("@@zip_cmd_path", "zip -q")
         end
 
-        zip = Epzip.zip( tmpdir, output_path )
+        zip = Epzip.zip( tmp_dir, output_path )
 
         validation = EpubValidator.check( output_path )
         if validation.valid?

@@ -20,10 +20,6 @@ describe Ebookie::Rendering::Pdf do
     document.config.destination = './tmp/'
   end
 
-  it "should return true for template?" do
-    expect(pdf.template?).to be true
-  end
-
   describe "process! method" do
     context 'pdf with no cover' do
       let(:document) { Ebookie::Document.new("My Book") }

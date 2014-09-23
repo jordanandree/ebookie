@@ -3,7 +3,7 @@ require "ostruct"
 module Ebookie
   module Rendering
     class Base
-      IMAGE_SRC_REGEX =  /src=['"](\/?.+\/)*.+\..+['"]/xim
+      IMAGE_SRC_REGEX = /src=['"](\/?.+\/)*.+\..+['"]/xim
 
       attr_reader :document
 
@@ -13,41 +13,35 @@ module Ebookie
         after_initialize if respond_to?(:after_initialize)
       end
 
-      def self.inherited(subclass)
-        subclass.class_eval do
-          attr_reader :settings
-        end
+      class << self
+        def inherited(subclass)
+          subclass.class_eval do
+            attr_reader :settings
+          end
 
-        subclass.instance_eval do
-          define_method :settings do
-            @@settings.send(format) || {}
+          subclass.instance_eval do
+            define_method :settings do
+              @@settings.send(format) || {}
+            end
           end
         end
-      end
 
-      def self.set(key, val)
-        @@settings ||= OpenStruct.new
+        def set(key, val)
+          @@settings ||= OpenStruct.new
 
-        format_options = @@settings.send(format) || {}
-        @@settings.send "#{format}=", format_options.merge({key => val})
-      end
+          format_options = @@settings.send(format) || {}
+          @@settings.send "#{format}=", format_options.merge({key => val})
+        end
 
-      def self.format
-        self.name.split("::").last.downcase
-      end
-
-      def template?
-        File.directory? templatedir
-      end
-
-      def templatedir
-        Pathname.new(File.expand_path("../../templates/#{format}/", __FILE__))
+        def format
+          self.name.split("::").last.downcase
+        end
       end
 
       def render
         throw "Output path required" unless document.destination
 
-        create_tmpdir
+        FileUtils.mkdir_p(tmp_dir) unless File.exists?(tmp_dir)
 
         create_paths if settings.keys.include?(:paths) && settings[:paths]
         copy_files if settings.keys.include?(:files) && settings[:files]
@@ -59,29 +53,13 @@ module Ebookie
         return output_path
       end
 
-      def create_tmpdir
-        FileUtils.mkdir_p tmpdir
-      end
+      def template_file(path)
+        custom_template_dir = Pathname.new(document.template) if document.template
 
-      def create_paths
-        settings[:paths].each do |path|
-          FileUtils.mkdir_p tmpdir.join(path)
-        end
-      end
-
-      def copy_images
-        document.images.each do |image|
-          FileUtils.cp image.file, tmpdir.join(settings[:images_dir], image.basename)
-        end
-      end
-
-      def copy_files
-        settings[:files].each do |file|
-          if File.extname(file) == '.erb' && ext = File.extname(file)
-            render_erb_to_file templatedir.join(file), tmpdir.join(file.gsub(ext, ''))
-          else
-            FileUtils.cp templatedir.join(file), tmpdir.join(file)
-          end
+        if document.template && File.exists?(custom_template_dir.join(format, path))
+          custom_template_dir.join(format, path)
+        else
+          template_dir.join(path)
         end
       end
 
@@ -94,15 +72,12 @@ module Ebookie
         write_contents_to_file(contents, filepath)
       end
 
-      def write_contents_to_file(contents, filepath, mode="w+")
-        File.open(filepath, mode) do |handle|
-          handle.write(contents)
-          handle.close
-        end
+      def tmp_dir
+        Pathname.new(File.expand_path("../../../../tmp/#{document.config.slug}/#{format}", __FILE__))
       end
 
-      def tmpdir
-        Pathname.new(File.expand_path("../../../../tmp/#{document.config.slug}/#{format}", __FILE__))
+      def template_dir
+        Pathname.new(File.expand_path("../../templates/#{format}", __FILE__))
       end
 
       def format
@@ -112,6 +87,37 @@ module Ebookie
       def output_path
         Pathname.new(document.destination).join("#{document.config.slug}.#{format}").to_s
       end
+
+      private
+
+        def create_paths
+          settings[:paths].each do |path|
+            FileUtils.mkdir_p tmp_dir.join(path)
+          end
+        end
+
+        def copy_images
+          document.images.each do |image|
+            FileUtils.cp image.file, tmp_dir.join(settings[:images_dir], image.basename)
+          end
+        end
+
+        def copy_files
+          settings[:files].each do |file|
+            if File.extname(file) == '.erb' && ext = File.extname(file)
+              render_erb_to_file template_file(file), tmp_dir.join(file.gsub(ext, ''))
+            else
+              FileUtils.cp template_file(file), tmp_dir.join(file)
+            end
+          end
+        end
+
+        def write_contents_to_file(contents, filepath, mode="w+")
+          File.open(filepath, mode) do |handle|
+            handle.write(contents)
+            handle.close
+          end
+        end
 
     end
   end
