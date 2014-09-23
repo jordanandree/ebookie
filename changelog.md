@@ -1,3 +1,10 @@
+## 0.2.0
+- custom templates support
+- added cli command to copy template files locally (`ebookie install DIRECTORY`)
+- allow pdf file type for PDF generator
+- fixed image replacement matcher for image paths
+- fixed copy_images task to not run if no images are set
+
 ## 0.1.2
 - updated output directory config setter/getter with name 'destination'
 - create the destination directory if it doesn't exist when processing renderer
