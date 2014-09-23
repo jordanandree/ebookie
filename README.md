@@ -68,6 +68,18 @@ document.render_mobi
 document.render_pdf
 ```
 
+#### Install templates for customization:
+
+```bash
+$ ebookie install ./path/to/templatees
+```
+
+Then configure the document:
+
+```ruby
+document.config.template = './path/to/templates'
+```
+
 ## PhantomJS Installation on Mac OS X
 
 There is a bug in PhantomJS on Mac OS X that doesn't render an HTML page as selectable text. It will be fixed in PhantomJS 2.0, so for now you'll have to apply a patch when installing with Homebrew.
