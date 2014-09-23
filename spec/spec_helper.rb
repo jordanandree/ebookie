@@ -5,6 +5,7 @@ ENV["LOG_LEVEL"] = "ERROR"
 ENV["LOG_LEVEL"] = "DEBUG" if ENV["DEBUG"]
 
 require "ebookie"
+require "ebookie/cli"
 
 if RUBY_VERSION > "1.9.3"
   require "pry-byebug"
