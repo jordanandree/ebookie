@@ -31,25 +31,12 @@ describe Ebookie::Rendering::Epub do
       expect(epub.settings[:files]).to be_a Array
     end
 
-    it "should have a template" do
-      expect(epub.templatedir).to be_a Pathname
-    end
-
-    it "should return true for template?" do
-      expect(epub.template?).to be true
-    end
-
     it "should have #format equal to epub" do
       expect(epub.format).to eq 'epub'
     end
   end
 
   describe "creating tmp dir", zip: false do
-    it "should call the create_tmpdir method" do
-      expect_any_instance_of(Ebookie::Rendering::Base).to receive(:create_tmpdir)
-      epub.render
-    end
-
     it "should create the directory" do
       epub.render
       expect(File.directory?('./tmp')).to be true

@@ -47,4 +47,12 @@ describe Ebookie::Document::Config do
     end
   end
 
+  describe "#template" do
+    it "can be set to custom template directory" do
+      FileUtils.mkdir_p './tmp/template'
+      config.template = './tmp/template'
+      expect(config.template.to_s).to match %r(tmp/template)
+    end
+  end
+
 end

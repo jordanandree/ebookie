@@ -4,6 +4,7 @@ require "pathname"
 module Ebookie
   class Cli < Thor
     include Thor::Actions
+    add_runtime_options!
 
     desc "install DIRECTORY", "install template files to DIRECTORY"
     def install(directory)

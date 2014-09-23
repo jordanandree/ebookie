@@ -17,14 +17,6 @@ describe Ebookie::Rendering::Mobi do
       expect(mobi.respond_to?(:files)).to be false
     end
 
-    it "should have a template" do
-      expect(mobi.templatedir).to be_a Pathname
-    end
-
-    it "should return false for template?" do
-      expect(mobi.template?).to be false
-    end
-
     it "should have #format equal to mobi" do
       expect(mobi.format).to eq 'mobi'
     end

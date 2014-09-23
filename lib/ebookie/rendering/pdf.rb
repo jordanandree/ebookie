@@ -17,7 +17,7 @@ module Ebookie
         @ghostscript_path = `which gs`.chomp
         raise "GhostScript not installed" unless @ghostscript_path
 
-        @tmp_path = tmpdir.join("document.pdf")
+        @tmp_path = tmp_dir.join("document.pdf")
         @pages = []
 
         @pdf_options = {
@@ -36,7 +36,7 @@ module Ebookie
       end
 
       def process!
-        convert_page(tmpdir.join('document.html'), @tmp_path)
+        convert_page(tmp_dir.join('document.html'), @tmp_path)
 
         ::PDF::Reader.new(@tmp_path).pages.each_with_index do |page, idx|
           prune_blank_page(idx)
@@ -50,20 +50,20 @@ module Ebookie
         end
 
         unless document.cover
-          @pdf_options.merge!(template: tmpdir.join("page-0.pdf"))
+          @pdf_options.merge!(template: tmp_dir.join("page-0.pdf"))
           @pages = @pages.drop(1)
         end
 
         Prawn::Document.generate(output_path, @pdf_options) do |pdf|
           @pages.each do |idx|
-            pdf.start_new_page( template: tmpdir.join("page-#{idx}.pdf") )
+            pdf.start_new_page( template: tmp_dir.join("page-#{idx}.pdf") )
           end
         end
       end
 
       def sanitize(content)
         match = content.match(IMAGE_SRC_REGEX).to_a.last
-        content.gsub! match, "#{tmpdir}/images/" if match
+        content.gsub! match, "#{tmp_dir}/images/" if match
         content
       end
 
@@ -78,17 +78,17 @@ module Ebookie
       end
 
       def convert_cover
-        FileUtils.cp document.cover, tmpdir.join('images', File.basename(document.cover))
-        cover_path = tmpdir.join("cover.pdf")
+        FileUtils.cp document.cover, tmp_dir.join('images', File.basename(document.cover))
+        cover_path = tmp_dir.join("cover.pdf")
 
         margins = %w(0in 0in 0in 0in)
-        convert_page(tmpdir.join('cover.html'), cover_path, margins)
+        convert_page(tmp_dir.join('cover.html'), cover_path, margins)
 
         return cover_path
       end
 
       def prune_blank_page(index)
-        output_file = tmpdir.join("page-#{index}.pdf")
+        output_file = tmp_dir.join("page-#{index}.pdf")
         options = ["-q",
                    "-dBATCH",
                    "-dNOPAUSE",

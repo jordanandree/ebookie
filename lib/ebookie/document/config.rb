@@ -12,6 +12,7 @@ module Ebookie
       attr_accessor :date
       attr_accessor :destination
       attr_accessor :cover
+      attr_accessor :template
 
       def date
         @date || Time.now.strftime("%F")

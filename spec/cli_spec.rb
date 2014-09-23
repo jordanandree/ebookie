@@ -4,7 +4,7 @@ describe Ebookie::Cli do
 
   describe "install" do
     before :each do
-      Ebookie::Cli.new.install('tmp')
+      Ebookie::Cli.start %w(install tmp -q)
     end
 
     it "should create the directories for epubs" do
