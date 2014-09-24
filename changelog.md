@@ -1,3 +1,7 @@
+## 0.2.1
+- Fix sanitization of html characters
+- Fix image paths replacement
+
 ## 0.2.0
 - custom templates support
 - added cli command to copy template files locally (`ebookie install DIRECTORY`)
