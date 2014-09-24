@@ -3,7 +3,7 @@ require "ostruct"
 module Ebookie
   module Rendering
     class Base
-      IMAGE_SRC_REGEX = /src=['"](\/?.+\/)*.+\..+['"]/xim
+      IMAGE_SRC_REGEX = /src=['|"]((\/?.+\/)*)?(.+?[\.]+.+?)['|"]/xi
 
       attr_reader :document
 
@@ -86,6 +86,35 @@ module Ebookie
 
       def output_path
         Pathname.new(document.destination).join("#{document.config.slug}.#{format}").to_s
+      end
+
+      def sanitize_html(html)
+        {
+          /&rsquo;|&lsquo;/ => "'",
+          /&rdquo;|&ldquo;/ => "\"",
+          "’"               => "'",
+          "&#58;"           => ":"
+        }.each do |k,v|
+          html.gsub! k, v
+        end
+
+        html
+      end
+
+      def clean_images(html, new_path)
+        html.each_line do |line|
+          old_line = line.dup
+          matches = line.match(IMAGE_SRC_REGEX).to_a
+          next unless matches.any?
+
+          # remove folder
+          line.gsub! matches[2], "" if matches[2]
+
+          # set our folder
+          line.gsub! matches[3], new_path.join(matches[3]).to_s
+
+          html.gsub! old_line, line
+        end
       end
 
       private

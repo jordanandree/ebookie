@@ -61,10 +61,15 @@ module Ebookie
         end
       end
 
-      def sanitize(content)
-        match = content.match(IMAGE_SRC_REGEX).to_a.last
-        content.gsub! match, "#{tmp_dir}/images/" if match
-        content
+      def sanitize(html)
+        html = html.dup
+        {
+          "—" => "&mdash;"
+        }.each do |k,v|
+          html.gsub! k, v
+        end
+
+        sanitize_html clean_images(html, tmp_dir.join("images"))
       end
 
       def convert_page(input_path, output_path, args=[])
