@@ -41,10 +41,18 @@ module Ebookie
         end
       end
 
-      def sanitize(content)
-        match = content.match(IMAGE_SRC_REGEX).to_a.last
-        content.gsub! match, "images/" if match
-        content
+      def sanitize(html)
+        html = html.dup
+        {
+          "<figure>"      => "<span class=\"figure\">",
+          "</figure>"     => "</span>",
+          "<figcaption>"  => "<span class=\"figcaption\">",
+          "</figcaption>" => "</span>"
+        }.each do |k,v|
+          html.gsub! k, v
+        end
+
+        sanitize_html clean_images(html, Pathname.new("images"))
       end
 
     end
