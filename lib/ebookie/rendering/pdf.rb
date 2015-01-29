@@ -83,7 +83,7 @@ module Ebookie
       end
 
       def convert_cover
-        FileUtils.cp document.cover, tmp_dir.join('images', File.basename(document.cover))
+        borrow document.cover.to_s, to: tmp_dir.join('images', File.basename(document.cover))
         cover_path = tmp_dir.join("cover.pdf")
 
         margins = %w(0in 0in 0in 0in)

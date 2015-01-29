@@ -98,9 +98,22 @@ describe Ebookie::Rendering::Epub do
       }.to raise_error
     end
 
-    it "should copy the cover image", zip: false do
-      epub.render
-      expect(File.exists?('./tmp/my-book/epub/OEBPS/images/cover.png')).to be true
+    context "with local cover image" do
+      it "should copy the image", zip: false do
+        epub.render
+        expect(File.exists?('./tmp/my-book/epub/OEBPS/images/cover.png')).to be true
+      end
+    end
+
+    context "with remote cover image" do
+      before do
+        document.config.cover = 'http://static.mailchimp.com/web/guides/getting-started-with-mailchimp/images/cover.png'
+      end
+
+      it "should copy the cover image", zip: false do
+        epub.render
+        expect(File.exists?('./tmp/my-book/epub/OEBPS/images/cover.png')).to be true
+      end
     end
 
     it "should write chapters to files", zip: false do
