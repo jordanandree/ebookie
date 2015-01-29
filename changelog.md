@@ -1,3 +1,7 @@
+## 0.2.2
+- added borrower gem for copy image files
+- support for remote image files
+
 ## 0.2.1
 - Fix sanitization of html characters
 - Fix image paths replacement
