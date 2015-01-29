@@ -42,14 +42,15 @@ module Ebookie
           prune_blank_page(idx)
         end
 
-        if convert_cover?
-          cover_path = convert_cover
-          @pdf_options.merge!(template: cover_path)
+        if document.cover
+          if File.extname(document.cover) != '.pdf'
+            cover_path = convert_cover
+            @pdf_options.merge!(template: cover_path)
+          else
+            borrow document.cover.to_s, to: tmp_dir.join('cover.pdf')
+            @pdf_options.merge!(template: tmp_dir.join('cover.pdf'))
+          end
         else
-          @pdf_options.merge!(template: document.cover)
-        end
-
-        unless document.cover
           @pdf_options.merge!(template: tmp_dir.join("page-0.pdf"))
           @pages = @pages.drop(1)
         end
