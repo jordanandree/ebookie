@@ -9,7 +9,7 @@ module Ebookie
       end
 
       def file=(path)
-        if File.exists? path
+        if File.exists?(path) || path.match(/http[s]?:\/\//)
           if File.extname(path) == '.png'
             @file = Pathname.new(path)
           else
