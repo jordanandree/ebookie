@@ -1,4 +1,5 @@
 require "ostruct"
+require "borrower"
 
 module Ebookie
   module Rendering
@@ -127,7 +128,7 @@ module Ebookie
 
         def copy_images
           document.images.each do |image|
-            FileUtils.cp image.file, tmp_dir.join(settings[:images_dir], image.basename)
+            borrow image.file.to_s, to: tmp_dir.join(settings[:images_dir], image.basename)
           end
         end
 
