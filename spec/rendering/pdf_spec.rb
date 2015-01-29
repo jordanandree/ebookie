@@ -42,7 +42,7 @@ describe Ebookie::Rendering::Pdf do
         document.config.cover = './spec/fixtures/sample-2.pdf'
       end
 
-      context 'png cover' do
+      context 'with local png cover' do
         before :each do
           document.config.cover = './spec/fixtures/sample-2.png'
         end
@@ -65,6 +65,17 @@ describe Ebookie::Rendering::Pdf do
         it "should create the cover", zip: false do
           pdf.render
           expect(File.exists?('./tmp/my-book/pdf/cover.pdf')).to be true
+        end
+      end
+
+      context 'with remote png cover' do
+        before :each do
+          document.config.cover = 'http://static.mailchimp.com/web/guides/getting-started-with-mailchimp/images/cover.png'
+        end
+
+        it "should copy the image", zip: false do
+          pdf.render
+          expect(File.exists?('./tmp/my-book/pdf/images/cover.png')).to be true
         end
       end
 

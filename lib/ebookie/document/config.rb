@@ -23,7 +23,7 @@ module Ebookie
       end
 
       def cover=(path)
-        if File.exists? path
+        if File.exists?(path) || path.match(/http[s]?:\/\//)
           if %w(.png .pdf).include? File.extname(path)
             @cover = Pathname.new(path)
           else

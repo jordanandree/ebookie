@@ -14,7 +14,7 @@ module Ebookie
           raise "Cover file is not a valid png"
         end
 
-        FileUtils.cp document.cover, tmp_dir.join("OEBPS/images/cover.png")
+        borrow document.cover.to_s, to: tmp_dir.join("OEBPS/images/cover.png")
       end
 
       def process!
