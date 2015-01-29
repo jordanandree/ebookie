@@ -13,6 +13,15 @@ describe Ebookie::Document::Image do
       expect(File.exists?(valid_image.file)).to be true
     end
   end
+
+  context "remote image file" do
+    it "should work" do
+      file = "http://mailchimp.com/assets/images/freddie.png"
+      image = Ebookie::Document::Image.new(file)
+      expect(image.file).to eq Pathname.new(file)
+    end
+  end
+
   context "with an invalid image file" do
     it "should not set @file" do
       expect(invalid_image.file).to be nil
