@@ -79,6 +79,17 @@ describe Ebookie::Rendering::Pdf do
         end
       end
 
+      context 'with remote pdf cover' do
+        before :each do
+          document.config.cover = 'http://static.mailchimp.com/web/guides/common-rookie-mistakes/package/common-rookie-mistakes.pdf'
+        end
+
+        it "should copy the image", zip: false do
+          pdf.render
+          expect(File.exists?('./tmp/my-book/pdf/cover.pdf')).to be true
+        end
+      end
+
       it "should add the converted cover to @pdf_options", zip: false do
         pdf.render
         expect(pdf.instance_variable_get("@pdf_options")[:template]).to_not be nil
