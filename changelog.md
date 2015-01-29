@@ -1,3 +1,6 @@
+## 0.2.3
+- copy remote covers locally for pdfs
+
 ## 0.2.2
 - added borrower gem for copy image files
 - support for remote image files
