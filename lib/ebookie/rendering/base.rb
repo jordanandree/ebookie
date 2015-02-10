@@ -1,5 +1,6 @@
 require "ostruct"
 require "borrower"
+require "erb"
 
 module Ebookie
   module Rendering
