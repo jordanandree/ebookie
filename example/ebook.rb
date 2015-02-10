@@ -1,4 +1,11 @@
 #!/usr/bin/env ruby
+#
+# To run me, simply cd to ./example and run:
+# 
+#   ./ebookie.rb {format}
+# 
+# {format} can be either pdf, epub, or mobi
+# 
 
 require "bundler/setup"
 require "ebookie"
