@@ -2,7 +2,7 @@
 
 Generate PDF, ePub, and Mobi eBooks
 
-[Example project](./tree/master/example)
+[Example project](./example)
 
 ## Installation
 
