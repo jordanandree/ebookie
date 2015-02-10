@@ -8,3 +8,5 @@ if RUBY_VERSION > "1.9.3"
 else
   gem "pry-debugger"
 end
+
+gem 'kramdown'
