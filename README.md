@@ -2,6 +2,8 @@
 
 Generate PDF, ePub, and Mobi eBooks
 
+[Example project](./tree/master/example)
+
 ## Installation
 
 Add this line to your application's Gemfile:
