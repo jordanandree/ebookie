@@ -22,6 +22,7 @@ document.configure do |config|
   config.source       = "http://mailchimp.com/resources/guides/getting-started-with-mailchimp"
 end
 
+# Add chapters in ./chapters/ directory
 Dir['./chapters/*.md'].each do |file|
 
   # Parse the chapter title from the file name
@@ -32,6 +33,14 @@ Dir['./chapters/*.md'].each do |file|
 
   # Add the chapter
   document.chapter chapter_title, chapter_contents
+
+end
+
+# Add images in ./images/ directory
+Dir['./images/*.png'].each do |image|
+
+  # Relative or absolute path for image to be copied
+  document.image image
 
 end
 
