@@ -93,9 +93,10 @@ module Ebookie
       def sanitize_html(html)
         {
           /&rsquo;|&lsquo;/ => "'",
-          /&rdquo;|&ldquo;/ => "\"",
+          /&rdquo;|&ldquo;|“|”/ => "\"",
           "’"               => "'",
-          "&#58;"           => ":"
+          "&#58;"           => ":",
+          "⌘"              => "&#8984;"
         }.each do |k,v|
           html.gsub! k, v
         end
