@@ -9,4 +9,4 @@ else
   gem "pry-debugger"
 end
 
-gem 'kramdown'
+gem "mc_markdown"
