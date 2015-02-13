@@ -1,4 +1,5 @@
 - Added example project with test chapters, images, and cover
+- Fixed character encoding for special quotes and Apple cmd key symbols
 
 ## 0.2.3
 - copy remote covers locally for pdfs
