@@ -1,3 +1,5 @@
+- Added example project with test chapters, images, and cover
+
 ## 0.2.3
 - copy remote covers locally for pdfs
 
