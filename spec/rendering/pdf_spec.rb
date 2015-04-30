@@ -8,12 +8,13 @@ describe Ebookie::Rendering::Pdf do
     if example.metadata[:zip] == false
       allow(Ebookie::Rendering::Pdf).to receive(:convert_page)
       allow(PDF::Reader).to receive(:new).and_return( OpenStruct.new(pages: {}) )
-      allow(Prawn::Document).to receive(:generate)
+      allow(CombinePDF).to receive(:save)
     end
   end
 
   before do
     document.chapter "Introduction", "<p>This is my foo bar</p>"
+    document.chapter "Links", "<p><a href='http://google.com'>this is a link</a></p>"
     document.chapter "Image", "<img src='sample.png' alt='Image' />"
     document.image "./spec/fixtures/sample.png"
 
@@ -23,11 +24,6 @@ describe Ebookie::Rendering::Pdf do
   describe "process! method" do
     context 'pdf with no cover' do
       let(:document) { Ebookie::Document.new("My Book") }
-
-      it "should use the first page as the template", zip: false do
-        pdf.render
-        expect(pdf.instance_variable_get("@pdf_options")[:template].to_s).to match "page-0.pdf"
-      end
 
       it "should create the pdf" do
         pdf.render
@@ -88,11 +84,6 @@ describe Ebookie::Rendering::Pdf do
           pdf.render
           expect(File.exists?('./tmp/my-book/pdf/cover.pdf')).to be true
         end
-      end
-
-      it "should add the converted cover to @pdf_options", zip: false do
-        pdf.render
-        expect(pdf.instance_variable_get("@pdf_options")[:template]).to_not be nil
       end
 
       it "should create the pdf" do
