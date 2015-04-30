@@ -1,5 +1,4 @@
-require "prawn"
-require "prawn/templates"
+require "combine_pdf"
 require "pdf-reader"
 
 module Ebookie
@@ -11,26 +10,14 @@ module Ebookie
       set :images_dir, 'images'
 
       def after_initialize
-        @phantomjs_path = `which phantomjs`.chomp
-        raise "PhantomJS not installed" unless @phantomjs_path
+        @wkhtmltopdf_path = `which wkhtmltopdf`.chomp
+        raise "wkhtmltopdf not installed" unless @wkhtmltopdf_path
 
         @ghostscript_path = `which gs`.chomp
         raise "GhostScript not installed" unless @ghostscript_path
 
         @tmp_path = tmp_dir.join("document.pdf")
         @pages = []
-
-        @pdf_options = {
-          :info => {
-            :Title        => document.title,
-            :Author       => document.creator,
-            :Subject      => document.subject,
-            :Keywords     => document.subject,
-            :Creator      => document.creator,
-            :Producer     => document.creator,
-            :CreationDate => document.date
-          }
-        }
 
         settings[:files] << 'cover.html.erb' if convert_cover?
       end
@@ -45,21 +32,18 @@ module Ebookie
         if document.cover
           if File.extname(document.cover) != '.pdf'
             cover_path = convert_cover
-            @pdf_options.merge!(template: cover_path)
+            @pages.unshift cover_path
           else
             borrow document.cover.to_s, to: tmp_dir.join('cover.pdf')
-            @pdf_options.merge!(template: tmp_dir.join('cover.pdf'))
+            @pages.unshift tmp_dir.join('cover.pdf')
           end
-        else
-          @pdf_options.merge!(template: tmp_dir.join("page-0.pdf"))
-          @pages = @pages.drop(1)
         end
 
-        Prawn::Document.generate(output_path, @pdf_options) do |pdf|
-          @pages.each do |idx|
-            pdf.start_new_page( template: tmp_dir.join("page-#{idx}.pdf") )
-          end
+        pdf = CombinePDF.new
+        @pages.compact.each do |page|
+          pdf << CombinePDF.new(page)
         end
+        pdf.save output_path
       end
 
       def sanitize(html)
@@ -74,9 +58,13 @@ module Ebookie
       end
 
       def convert_page(input_path, output_path, args=[])
-        script = File.expand_path("../html2pdf.js", __FILE__)
-        command = [@phantomjs_path, script, input_path, output_path]
-        system (command + args).join(' ')
+        args << "--quiet"
+        args << "--page-size Letter"
+        args << "--title '#{document.title}'"
+        command = [@wkhtmltopdf_path] + args
+        command << input_path
+        command << output_path
+        system command.join(' ')
       end
 
       def convert_cover?
@@ -87,7 +75,7 @@ module Ebookie
         borrow document.cover.to_s, to: tmp_dir.join('images', File.basename(document.cover))
         cover_path = tmp_dir.join("cover.pdf")
 
-        margins = %w(0in 0in 0in 0in)
+        margins = ['--margin-top 0', '--margin-bottom 0', '--margin-left 0', '--margin-right 0']
         convert_page(tmp_dir.join('cover.html'), cover_path, margins)
 
         return cover_path
@@ -108,7 +96,7 @@ module Ebookie
         colors = `#{@ghostscript_path} -q -o - -sDEVICE=inkcov #{output_file}`
         colors = colors.split(" ").uniq[0..-3]
         unless colors.length == 1 && colors.first == "0.00000"
-          @pages << index.to_s
+          @pages << tmp_dir.join("page-#{index}.pdf")
         end
       end
 

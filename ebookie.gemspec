@@ -25,8 +25,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "epzip",               "~> 0.8.0"
   spec.add_dependency "epub_validator",      "~> 1.1.0"
   spec.add_dependency "kindlegen",           "~> 2.9.1"
-  spec.add_dependency "prawn",               "= 0.15.0"
-  spec.add_dependency "prawn-templates",     "~> 0.0.3"
+  spec.add_dependency "wkhtmltopdf-binary",  "~> 0.9.9"
+  spec.add_dependency "combine_pdf",         "~> 0.1.0"
   spec.add_dependency "pdf-reader",          "~> 1.3.3"
   spec.add_dependency "borrower",            "~> 0.9.1"
 
