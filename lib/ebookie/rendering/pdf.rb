@@ -10,8 +10,7 @@ module Ebookie
       set :images_dir, 'images'
 
       def after_initialize
-        @wkhtmltopdf_path = `which wkhtmltopdf`.chomp
-        raise "wkhtmltopdf not installed" unless @wkhtmltopdf_path
+        @wkhtmltopdf_path = Gem.bin_path("wkhtmltopdf-binary-edge")
 
         @ghostscript_path = `which gs`.chomp
         raise "GhostScript not installed" unless @ghostscript_path
