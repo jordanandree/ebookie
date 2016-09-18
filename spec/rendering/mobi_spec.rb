@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "spec_helper"
 
 describe Ebookie::Rendering::Mobi do
@@ -5,7 +6,7 @@ describe Ebookie::Rendering::Mobi do
   let(:mobi) { Ebookie::Rendering::Mobi.new(document) }
 
   before :each do
-    document.config.cover = './spec/fixtures/sample.png'
+    document.config.cover = "./spec/fixtures/sample.png"
   end
 
   describe "configuration" do
@@ -18,7 +19,7 @@ describe Ebookie::Rendering::Mobi do
     end
 
     it "should have #format equal to mobi" do
-      expect(mobi.format).to eq 'mobi'
+      expect(mobi.format).to eq "mobi"
     end
   end
 
@@ -26,13 +27,13 @@ describe Ebookie::Rendering::Mobi do
     before :each do
       document.chapter "Introduction", "This is my foo bar"
       document.configure do |config|
-        config.destination = './tmp/'
+        config.destination = "./tmp/"
       end
     end
 
     it "should convert epub to mobi" do
       mobi.render
-      expect(File.exists?('./tmp/my-book.mobi')).to be true
+      expect(File.exist?("./tmp/my-book.mobi")).to be true
     end
   end
 end

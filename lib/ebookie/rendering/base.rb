@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "ostruct"
 require "borrower"
 require "erb"
@@ -32,41 +33,42 @@ module Ebookie
           @@settings ||= OpenStruct.new
 
           format_options = @@settings.send(format) || {}
-          @@settings.send "#{format}=", format_options.merge({key => val})
+          @@settings.send "#{format}=", format_options.merge(key => val)
         end
 
         def format
-          self.name.split("::").last.downcase
+          name.split("::").last.downcase
         end
       end
 
       def render
         throw "Output path required" unless document.destination
 
-        FileUtils.mkdir_p(tmp_dir) unless File.exists?(tmp_dir)
+        FileUtils.mkdir_p(tmp_dir) unless File.exist?(tmp_dir)
 
         create_paths if settings.keys.include?(:paths) && settings[:paths]
         copy_files if settings.keys.include?(:files) && settings[:files]
         copy_images if document.images.any? && settings[:images_dir]
 
-        FileUtils.mkdir_p(document.destination) unless File.exists?(document.destination)
+        FileUtils.mkdir_p(document.destination) unless File.exist?(document.destination)
 
         process!
-        return output_path
+        output_path
       end
 
       def template_file(path)
         custom_template_dir = Pathname.new(document.template) if document.template
 
-        if document.template && File.exists?(custom_template_dir.join(format, path))
+        if document.template && File.exist?(custom_template_dir.join(format, path))
           custom_template_dir.join(format, path)
         else
           template_dir.join(path)
         end
       end
 
-      def render_erb_to_file(template, filepath, locals={})
-        locals.merge! document: document, renderer: self
+      def render_erb_to_file(template, filepath, locals = {})
+        locals[:document] = document
+        locals[:renderer] = self
 
         locals_struct = OpenStruct.new(locals).instance_eval { binding }
         contents = ERB.new(File.read(template)).result(locals_struct)
@@ -93,11 +95,11 @@ module Ebookie
       def sanitize_html(html)
         {
           /&rsquo;|&lsquo;/ => "'",
-          /&rdquo;|&ldquo;|“|”/ => "\"",
+          /&rdquo;|&ldquo;|“|”/ => '"',
           "’"               => "'",
           "&#58;"           => ":",
-          "⌘"              => "&#8984;"
-        }.each do |k,v|
+          "⌘" => "&#8984;"
+        }.each do |k, v|
           html.gsub! k, v
         end
 
@@ -136,21 +138,20 @@ module Ebookie
 
         def copy_files
           settings[:files].each do |file|
-            if File.extname(file) == '.erb' && ext = File.extname(file)
-              render_erb_to_file template_file(file), tmp_dir.join(file.gsub(ext, ''))
+            if File.extname(file) == ".erb" && ext = File.extname(file)
+              render_erb_to_file template_file(file), tmp_dir.join(file.gsub(ext, ""))
             else
               FileUtils.cp template_file(file), tmp_dir.join(file)
             end
           end
         end
 
-        def write_contents_to_file(contents, filepath, mode="w+")
+        def write_contents_to_file(contents, filepath, mode = "w+")
           File.open(filepath, mode) do |handle|
             handle.write(contents)
             handle.close
           end
         end
-
     end
   end
 end

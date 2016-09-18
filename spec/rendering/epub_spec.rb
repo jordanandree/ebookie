@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "spec_helper"
 
 describe Ebookie::Rendering::Epub do
@@ -10,15 +11,15 @@ describe Ebookie::Rendering::Epub do
     document.image "./spec/fixtures/sample.png"
 
     document.configure do |config|
-      config.destination = './tmp/'
-      config.cover = './spec/fixtures/sample.png'
+      config.destination = "./tmp/"
+      config.cover = "./spec/fixtures/sample.png"
     end
   end
 
   before :each do |example|
     if example.metadata[:zip] == false
       allow(Epzip).to receive(:zip).and_return(true)
-      allow(EpubValidator).to receive(:check).and_return OpenStruct.new({:valid? => true})
+      allow(EpubValidator).to receive(:check).and_return OpenStruct.new(valid?: true)
     end
   end
 
@@ -32,14 +33,14 @@ describe Ebookie::Rendering::Epub do
     end
 
     it "should have #format equal to epub" do
-      expect(epub.format).to eq 'epub'
+      expect(epub.format).to eq "epub"
     end
   end
 
   describe "creating tmp dir", zip: false do
     it "should create the directory" do
       epub.render
-      expect(File.directory?('./tmp')).to be true
+      expect(File.directory?("./tmp")).to be true
     end
   end
 
@@ -54,7 +55,7 @@ describe Ebookie::Rendering::Epub do
 
     it "should create the directory" do
       epub.render
-      expect(File.directory?('./tmp/my-book/epub/OEBPS')).to be true
+      expect(File.directory?("./tmp/my-book/epub/OEBPS")).to be true
     end
   end
 
@@ -66,15 +67,15 @@ describe Ebookie::Rendering::Epub do
 
     it "should create the files" do
       epub.render
-      expect(File.exists?('./tmp/my-book/epub/mimetype')).to be true
-      expect(File.exists?('./tmp/my-book/epub/OEBPS/epub.css')).to be true
-      expect(File.exists?('./tmp/my-book/epub/META-INF/container.xml')).to be true
+      expect(File.exist?("./tmp/my-book/epub/mimetype")).to be true
+      expect(File.exist?("./tmp/my-book/epub/OEBPS/epub.css")).to be true
+      expect(File.exist?("./tmp/my-book/epub/META-INF/container.xml")).to be true
     end
 
     it "should create files from erb templates" do
       epub.render
-      expect(File.exists?('./tmp/my-book/epub/OEBPS/content.opf')).to be true
-      expect(File.exists?('./tmp/my-book/epub/OEBPS/toc.ncx')).to be true
+      expect(File.exist?("./tmp/my-book/epub/OEBPS/content.opf")).to be true
+      expect(File.exist?("./tmp/my-book/epub/OEBPS/toc.ncx")).to be true
     end
   end
 
@@ -86,39 +87,39 @@ describe Ebookie::Rendering::Epub do
 
     it "should copy the images" do
       epub.render
-      expect(File.exists?('./tmp/my-book/epub/OEBPS/images/sample.png')).to be true
+      expect(File.exist?("./tmp/my-book/epub/OEBPS/images/sample.png")).to be true
     end
   end
 
   describe "processing the epub" do
     it "should fail if cover is not png", zip: false do
-      document.config.cover = './spec/fixtures/sample-2.pdf'
-      expect {
+      document.config.cover = "./spec/fixtures/sample-2.pdf"
+      expect do
         epub.render
-      }.to raise_error
+      end.to raise_error
     end
 
     context "with local cover image" do
       it "should copy the image", zip: false do
         epub.render
-        expect(File.exists?('./tmp/my-book/epub/OEBPS/images/cover.png')).to be true
+        expect(File.exist?("./tmp/my-book/epub/OEBPS/images/cover.png")).to be true
       end
     end
 
     context "with remote cover image" do
       before do
-        document.config.cover = 'http://static.mailchimp.com/web/guides/getting-started-with-mailchimp/images/cover.png'
+        document.config.cover = "http://static.mailchimp.com/web/guides/getting-started-with-mailchimp/images/cover.png"
       end
 
       it "should copy the cover image", zip: false do
         epub.render
-        expect(File.exists?('./tmp/my-book/epub/OEBPS/images/cover.png')).to be true
+        expect(File.exist?("./tmp/my-book/epub/OEBPS/images/cover.png")).to be true
       end
     end
 
     it "should write chapters to files", zip: false do
       epub.render
-      expect(File.exists?('./tmp/my-book/epub/OEBPS/introduction.html')).to be true
+      expect(File.exist?("./tmp/my-book/epub/OEBPS/introduction.html")).to be true
     end
 
     it "should process renderer" do
@@ -128,7 +129,7 @@ describe Ebookie::Rendering::Epub do
 
     it "should create the epub" do
       epub.render
-      expect(File.exists?('./tmp/my-book.epub')).to be true
+      expect(File.exist?("./tmp/my-book.epub")).to be true
     end
   end
 end

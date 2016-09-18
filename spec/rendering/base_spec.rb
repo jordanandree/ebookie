@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "spec_helper"
 
 describe Ebookie::Rendering::Base do
@@ -13,32 +14,31 @@ describe Ebookie::Rendering::Base do
   describe "#template_file" do
     context "without custom template" do
       it "should return default file" do
-        expect(base.template_file('mimetype').to_s).to match %r(lib/ebookie/templates/epub/mimetype)
+        expect(base.template_file("mimetype").to_s).to match %r{lib/ebookie/templates/epub/mimetype}
       end
     end
 
-    context 'with a custom template' do
+    context "with a custom template" do
       before :each do
-        FileUtils.mkdir_p './tmp/template/epub/OEBPS'
-        document.config.template = './tmp/template'
-        document.config.destination = './tmp/'
+        FileUtils.mkdir_p "./tmp/template/epub/OEBPS"
+        document.config.template = "./tmp/template"
+        document.config.destination = "./tmp/"
 
         document.chapter "Foo", "Bar"
 
         File.open "./tmp/template/epub/OEBPS/epub.css", "w+" do |f|
-          f.write 'foo'
+          f.write "foo"
         end
       end
 
       it "should return a custom file" do
-        expect(base.template_file('OEBPS/epub.css').to_s).to match %r(tmp/template/epub/OEBPS/epub.css)
+        expect(base.template_file("OEBPS/epub.css").to_s).to match %r{tmp/template/epub/OEBPS/epub.css}
       end
 
       it "should implement custom file when rendered" do
         base.render
-        expect(File.read(base.tmp_dir.join('OEBPS/epub.css'))).to eq "foo"
+        expect(File.read(base.tmp_dir.join("OEBPS/epub.css"))).to eq "foo"
       end
     end
   end
-
 end

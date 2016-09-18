@@ -1,11 +1,12 @@
+# frozen_string_literal: true
 require 'bundler/setup'
 Bundler.setup
 
-ENV["LOG_LEVEL"] = "ERROR"
-ENV["LOG_LEVEL"] = "DEBUG" if ENV["DEBUG"]
+ENV['LOG_LEVEL'] = 'ERROR'
+ENV['LOG_LEVEL'] = 'DEBUG' if ENV['DEBUG']
 
-require "ebookie"
-require "ebookie/cli"
+require 'ebookie'
+require 'ebookie/cli'
 
 RSpec.configure do |config|
   # The settings below are suggested to provide a good initial experience
@@ -44,11 +45,10 @@ RSpec.configure do |config|
   end
 
   config.before :each do
-    FileUtils.rm_rf "./tmp" if File.exists?("./tmp")
+    FileUtils.rm_rf './tmp' if File.exist?('./tmp')
   end
 
   config.after :each do
-    FileUtils.rm_rf "./tmp" unless ENV['DEBUG']
+    FileUtils.rm_rf './tmp' unless ENV['DEBUG']
   end
-
 end

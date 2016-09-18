@@ -1,7 +1,7 @@
+# frozen_string_literal: true
 module Ebookie
   module Document
     class Chapter
-
       attr_accessor :title, :content
 
       def initialize(title, content)
@@ -18,9 +18,8 @@ module Ebookie
       end
 
       def slug
-        title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+        title.downcase.strip.tr(" ", "-").gsub(/[^\w-]/, "")
       end
-
     end
   end
 end

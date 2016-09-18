@@ -1,4 +1,5 @@
 # coding: utf-8
+# frozen_string_literal: true
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'ebookie/version'
@@ -8,15 +9,15 @@ Gem::Specification.new do |spec|
   spec.version       = Ebookie::VERSION
   spec.authors       = ['Jordan Andree']
   spec.email         = ['jordanandree@gmail.com']
-  spec.summary       = %q{Generate PDF, ePub, and Mobi eBooks}
-  spec.description   = %q{Generate PDF, ePub, and Mobi eBooks}
+  spec.summary       = 'Generate PDF, ePub, and Mobi eBooks'
+  spec.description   = 'Generate PDF, ePub, and Mobi eBooks'
   spec.homepage      = 'https://github.com/jordanandree/ebookie'
   spec.license       = 'MIT'
 
   spec.files         = Dir['LICENSE.txt', 'README.md', 'lib/**/*']
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
-  spec.require_paths = ["lib"]
+  spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'epzip',               '~> 0.8.0', '>= 0.8.0'
   spec.add_runtime_dependency 'epub_validator',      '~> 1.1.0', '>= 1.1.0'

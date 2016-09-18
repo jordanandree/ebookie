@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 require "spec_helper"
 
 describe Ebookie::Document::Image do
-  let(:valid_image) { Ebookie::Document::Image.new('./spec/fixtures/sample.png') }
-  let(:invalid_image) { Ebookie::Document::Image.new('./spec/fixtures/sample.jpg') }
+  let(:valid_image) { Ebookie::Document::Image.new("./spec/fixtures/sample.png") }
+  let(:invalid_image) { Ebookie::Document::Image.new("./spec/fixtures/sample.jpg") }
 
   context "with a valid image file" do
     it "should set @file with the image" do
@@ -10,7 +11,7 @@ describe Ebookie::Document::Image do
     end
 
     it "should have an existing file" do
-      expect(File.exists?(valid_image.file)).to be true
+      expect(File.exist?(valid_image.file)).to be true
     end
   end
 
@@ -33,5 +34,4 @@ describe Ebookie::Document::Image do
       expect(valid_image.basename).to eq "sample.png"
     end
   end
-
 end

@@ -1,7 +1,7 @@
+# frozen_string_literal: true
 module Ebookie
   module Document
     class Config
-
       attr_accessor :title
       attr_accessor :creator
       attr_accessor :publisher
@@ -23,8 +23,8 @@ module Ebookie
       end
 
       def cover=(path)
-        if File.exists?(path) || path.match(/http[s]?:\/\//)
-          if %w(.png .pdf).include? File.extname(path)
+        if File.exist?(path) || path.match(/http[s]?:\/\//)
+          if %w[.png .pdf].include? File.extname(path)
             @cover = Pathname.new(path)
           else
             Ebookie.logger.warn "Cover file is not a valid"
@@ -35,9 +35,8 @@ module Ebookie
       end
 
       def slug
-        title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+        title.downcase.strip.tr(" ", "-").gsub(/[^\w-]/, "")
       end
-
     end
   end
 end

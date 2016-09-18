@@ -1,7 +1,7 @@
+# frozen_string_literal: true
 module Ebookie
   module Document
     class Base
-
       attr_reader :chapters, :images, :config
 
       def initialize(title)
@@ -12,7 +12,7 @@ module Ebookie
         @config.title = title
       end
 
-      def configure(&block)
+      def configure
         yield @config
       end
 
@@ -43,7 +43,6 @@ module Ebookie
           super
         end
       end
-
     end
   end
 end

@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 require "spec_helper"
 
 describe Ebookie::Document::Base do
   let(:document) { Ebookie::Document::Base.new("My Title") }
 
   before do
-    document.config.destination = './tmp'
+    document.config.destination = "./tmp"
   end
 
   it "should have a chapters array" do
@@ -18,25 +19,25 @@ describe Ebookie::Document::Base do
   describe "#configure method" do
     it "should yield block for setting options" do
       document.configure do |config|
-        config.title = 'bar'
-        config.destination = 'foo'
+        config.title = "bar"
+        config.destination = "foo"
       end
 
-      expect(document.config.title).to eq 'bar'
-      expect(document.config.destination).to eq 'foo'
+      expect(document.config.title).to eq "bar"
+      expect(document.config.destination).to eq "foo"
     end
   end
 
   describe "#chapter method" do
     it "should add a Chapter object" do
-      document.chapter 'foo', 'bar'
+      document.chapter "foo", "bar"
       expect(document.chapters.first).to be_a Ebookie::Document::Chapter
     end
   end
 
   describe "#image method" do
     it "should add a Image object" do
-      document.image 'sample.png'
+      document.image "sample.png"
       expect(document.images.first).to be_a Ebookie::Document::Image
     end
   end

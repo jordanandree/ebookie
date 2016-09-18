@@ -1,16 +1,16 @@
+# frozen_string_literal: true
 require "epzip"
 require "epub_validator"
 
 module Ebookie
   module Rendering
     class Epub < Base
-
-      set :paths, %w(OEBPS OEBPS/images META-INF)
-      set :files, %w(mimetype OEBPS/epub.css OEBPS/content.opf.erb OEBPS/toc.ncx.erb META-INF/container.xml)
-      set :images_dir, 'OEBPS/images'
+      set :paths, %w[OEBPS OEBPS/images META-INF]
+      set :files, %w[mimetype OEBPS/epub.css OEBPS/content.opf.erb OEBPS/toc.ncx.erb META-INF/container.xml]
+      set :images_dir, "OEBPS/images"
 
       def copy_cover
-        if File.extname(document.cover) != '.png'
+        if File.extname(document.cover) != ".png"
           raise "Cover file is not a valid png"
         end
 
@@ -28,9 +28,9 @@ module Ebookie
           Epzip.class_variable_set("@@zip_cmd_path", "zip -q")
         end
 
-        zip = Epzip.zip( tmp_dir, output_path )
+        zip = Epzip.zip(tmp_dir, output_path)
 
-        validation = EpubValidator.check( output_path )
+        validation = EpubValidator.check(output_path)
         if validation.valid?
           Ebookie.logger.info "Successfully compiled #{document.title} to epub"
         else
@@ -44,17 +44,16 @@ module Ebookie
       def sanitize(html)
         html = html.dup
         {
-          "<figure>"      => "<span class=\"figure\">",
+          "<figure>"      => '<span class="figure">',
           "</figure>"     => "</span>",
-          "<figcaption>"  => "<span class=\"figcaption\">",
+          "<figcaption>"  => '<span class="figcaption">',
           "</figcaption>" => "</span>"
-        }.each do |k,v|
+        }.each do |k, v|
           html.gsub! k, v
         end
 
         sanitize_html clean_images(html, Pathname.new("images"))
       end
-
     end
   end
 end
