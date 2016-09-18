@@ -18,10 +18,6 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency 'bundler', '~> 1.5'
-  spec.add_development_dependency 'rake',    '~> 10.0'
-  spec.add_development_dependency 'rspec',   '~> 3.0'
-
   spec.add_runtime_dependency 'epzip',               '~> 0.8.0', '>= 0.8.0'
   spec.add_runtime_dependency 'epub_validator',      '~> 1.1.0', '>= 1.1.0'
   spec.add_runtime_dependency 'kindlegen',           '~> 2.9.1', '>= 2.9.1'

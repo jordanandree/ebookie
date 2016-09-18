@@ -1,12 +1,17 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in ebookie.gemspec
 gemspec
 
-if RUBY_VERSION > "1.9.3"
-  gem "pry-byebug"
-else
-  gem "pry-debugger"
+group :development do
+  if RUBY_VERSION >= '2.0.0'
+    gem 'pry-byebug'
+  else
+    gem 'pry-debugger'
+  end
+  gem "mc_markdown"
 end
 
-gem "mc_markdown"
+group :test do
+  gem 'rake',  '~> 10.1'
+  gem 'rspec', '~> 3.0.0'
+end
