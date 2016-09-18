@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.0
   DisplayCopNames: true
   DefaultFormatter: simple
   Include:
@@ -33,6 +33,9 @@ Style/PercentLiteralDelimiters:
 # can't enforce style to require
 # the trailing underscore -- so disabling for now
 Style/TrailingUnderscoreVariable:
+  Enabled: false
+
+Style/NumericPredicate:
   Enabled: false
 
 # Metrics

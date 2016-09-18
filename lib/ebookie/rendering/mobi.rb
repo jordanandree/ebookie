@@ -16,7 +16,7 @@ module Ebookie
           line.include?("Warning")
         end
 
-        if warnings.length.positive?
+        unless warnings.empty?
           Ebookie.logger.warn "Warnings when compiling #{document.title} to mobi"
           warnings.each do |m|
             Ebookie.logger.warn "~> #{m}"
