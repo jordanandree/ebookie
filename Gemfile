@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 source 'https://rubygems.org'
 
 gemspec
@@ -8,7 +9,9 @@ group :development do
   else
     gem 'pry-debugger'
   end
-  gem "mc_markdown"
+
+  gem 'mc_markdown'
+  gem 'rubocop'
 end
 
 group :test do
