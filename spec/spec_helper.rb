@@ -7,12 +7,6 @@ ENV["LOG_LEVEL"] = "DEBUG" if ENV["DEBUG"]
 require "ebookie"
 require "ebookie/cli"
 
-if RUBY_VERSION > "1.9.3"
-  require "pry-byebug"
-else
-  require "pry-debugger"
-end
-
 RSpec.configure do |config|
   # The settings below are suggested to provide a good initial experience
   # with RSpec, but feel free to customize to your heart's content.
