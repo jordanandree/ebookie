@@ -1,4 +1,6 @@
 # Ebookie
+[![Build Status](https://travis-ci.org/jordanandree/ebookie.svg?branch=master)](https://travis-ci.org/jordanandree/ebookie)
+[![Dependency Status](https://gemnasium.com/badges/github.com/jordanandree/ebookie.svg)](https://gemnasium.com/github.com/jordanandree/ebookie)
 
 Generate PDF, ePub, and Mobi eBooks
 
