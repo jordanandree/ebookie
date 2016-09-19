@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'epub_validator',      '~> 1.1.0', '>= 1.1.0'
   spec.add_runtime_dependency 'kindlegen',           '~> 2.9.1', '>= 2.9.1'
   spec.add_runtime_dependency 'wkhtmltopdf-binary-edge', '~> 0.12.2', '>= 0.12.2'
-  spec.add_runtime_dependency 'combine_pdf',         '~> 0.1.0', '>= 0.1.0'
+  spec.add_runtime_dependency 'combine_pdf',         '~> 0.2.0', '>= 0.2.31'
   spec.add_runtime_dependency 'pdf-reader',          '~> 1.3.3', '>= 1.3.3'
   spec.add_runtime_dependency 'borrower',            '~> 0.9.1', '>= 0.9.1'
   spec.add_runtime_dependency 'thor',                '~> 0.19',  '>= 0.19'
